@@ -4,6 +4,7 @@ import {
     DiaDetalhe,
     DiaResumo,
   HistoricoItem, Hoje, Me, Missao, MissaoRequest, Penalidade, Punicao, PunicaoRequest,
+  RankingItem,
   Recompensa, RecompensaRequest, Tesouro, brl,
 } from './models';
 
@@ -19,6 +20,8 @@ export class JogoStore {
   recompensas = signal<Recompensa[]>([]);
   tesouro = signal<Tesouro | null>(null);
   historico = signal<HistoricoItem[]>([]);
+
+  ranking = signal<RankingItem[]>([]);
 
   diaSelecionado = signal<string | null>(null);
   mesVisivel = signal<string>('');
@@ -45,6 +48,7 @@ export class JogoStore {
     this.tesouro.set(tesouro);
     this.historico.set(historico);
     this.diaSelecionado.set(hoje.data);
+    this.ranking.set(await this.api.ranking());
     await this.irParaMes(hoje.data.slice(0, 7));
   }
 
@@ -197,6 +201,7 @@ private async atualizarCalendario() {
     this.historico.set(historico);
     if (nivelAntes && me.nivel > nivelAntes) this.avisar(`LEVEL UP · NÍVEL ${me.nivel}`, true);
 
+    this.ranking.set(await this.api.ranking());
     await this.atualizarCalendario();
   }
 

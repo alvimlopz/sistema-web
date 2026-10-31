@@ -93,3 +93,8 @@ export function quandoTexto(m: Missao): string {
   }
   return diasTexto(m.dias);
 }
+
+export interface RankingItem {
+  posicao: number; nome: string; fotoUrl: string | null;
+  nivel: number; xpTotal: number; voce: boolean;
+}

@@ -5,6 +5,7 @@ import {
     DiaDetalhe,
     DiaResumo,
   HistoricoItem, Hoje, Me, Missao, MissaoRequest, Penalidade, Punicao, PunicaoRequest,
+  RankingItem,
   Recompensa, RecompensaRequest, Tesouro,
 } from './models';
 import { environment } from '../environments/environment';
@@ -32,6 +33,8 @@ export class ApiService {
 
   calendario(mes: string) { return this.get<DiaResumo[]>(`/calendario?mes=${mes}`); }
   dia(data: string) { return this.get<DiaDetalhe>(`/calendario/dia/${data}`); }
+
+  ranking() { return this.get<RankingItem[]>('/ranking'); }
 
   punicoes() { return this.get<Punicao[]>('/punicoes'); }
   criarPunicao(r: PunicaoRequest) { return this.post<Punicao>('/punicoes', r); }
