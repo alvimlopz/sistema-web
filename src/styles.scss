@@ -1,1 +1,88 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  --void: #05080f; --panel: #0a1322; --panel-2: #0e1b30; --line: #1d3a63;
+  --glow: #4cc3ff; --glow-soft: rgba(76,195,255,.14); --ink: #d9ecff; --mute: #7f9bbd;
+  --red: #ff4d5e; --red-soft: rgba(255,77,94,.12); --gold: #ffc65c; --ok: #5cf0b0;
+  --f-display: "Oxanium", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; min-height: 100vh; color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.5;
+  background: var(--void) radial-gradient(1200px 500px at 50% -200px, rgba(76,195,255,.12), transparent 70%) no-repeat;
+}
+h1, h2 { font-family: var(--f-display); margin: 0; }
+h1 { font-weight: 800; font-size: clamp(26px, 6vw, 34px); letter-spacing: .06em; }
+h2 { font-weight: 600; font-size: 18px; letter-spacing: .08em; text-transform: uppercase; }
+
+.tag { font-family: var(--f-mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--glow); }
+.tag.gold { color: var(--gold); } .tag.red { color: var(--red); }
+.mute { color: var(--mute); }
+.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; font-size: 12px; }
+.erro { color: var(--red); }
+
+.win {
+  position: relative; background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--line); border-radius: 4px; padding: 18px;
+  box-shadow: 0 0 0 1px rgba(76,195,255,.06) inset, 0 0 28px rgba(76,195,255,.07);
+}
+.win::before, .win::after { content: ""; position: absolute; width: 14px; height: 14px; border: 2px solid var(--glow); pointer-events: none; }
+.win::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.win::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+
+.btn {
+  font-family: var(--f-display); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; font-size: 12px;
+  cursor: pointer; background: transparent; color: var(--glow); border: 1px solid var(--glow); padding: 7px 12px; border-radius: 2px;
+}
+.btn:hover { background: var(--glow-soft); }
+.btn:disabled { opacity: .5; cursor: default; }
+.btn.solid { background: var(--glow); color: var(--void); }
+.btn.red { color: var(--red); border-color: var(--red); }
+.btn.gold { color: var(--gold); border-color: var(--gold); }
+.btn.gold.solid { background: var(--gold); color: var(--void); }
+.btn.small { padding: 4px 8px; font-size: 11px; }
+.btn:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--glow); outline-offset: 2px; }
+
+.sec-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.list { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+.item { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; padding: 12px; border: 1px solid var(--line); background: rgba(5,8,15,.35); }
+.item .t { font-weight: 600; }
+.item .s { font-size: 12.5px; color: var(--mute); }
+.item.done { border-color: rgba(92,240,176,.45); background: rgba(92,240,176,.05); }
+.item.pen { border-color: rgba(255,77,94,.5); background: var(--red-soft); }
+.item.locked { opacity: .55; }
+.item .acoes { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.chk { width: 26px; height: 26px; border: 1.5px solid var(--glow); background: transparent; cursor: pointer; display: grid; place-items: center; color: var(--void); padding: 0; }
+.done .chk { background: var(--ok); border-color: var(--ok); }
+.xp { font-family: var(--f-mono); font-size: 12px; color: var(--glow); white-space: nowrap; }
+.empty { padding: 18px; border: 1px dashed var(--line); text-align: center; color: var(--mute); font-size: 14px; }
+
+dialog {
+  background: var(--panel); color: var(--ink); border: 1px solid var(--glow); border-radius: 4px; padding: 20px;
+  width: min(460px, calc(100vw - 32px)); box-shadow: 0 0 40px rgba(76,195,255,.25);
+}
+dialog::backdrop { background: rgba(2,4,8,.75); }
+dialog form { display: flex; flex-direction: column; gap: 12px; }
+label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-family: var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+input, select {
+  font: inherit; font-family: var(--f-body); font-size: 15px; text-transform: none; letter-spacing: 0; color: var(--ink);
+  background: var(--void); border: 1px solid var(--line); padding: 8px 10px; border-radius: 2px; width: 100%;
+}
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.dias { display: flex; gap: 4px; flex-wrap: wrap; }
+.dias button { font-family: var(--f-mono); font-size: 12px; padding: 6px 9px; border: 1px solid var(--line); background: transparent; color: var(--mute); cursor: pointer; }
+.dias button.on { border-color: var(--glow); color: var(--ink); background: var(--glow-soft); }
+.form-acoes { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.form-acoes > div { display: flex; gap: 8px; }
+
+.toast {
+  position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 50; text-align: center;
+  border: 1px solid var(--glow); background: var(--panel); padding: 12px 18px; font-family: var(--f-display); letter-spacing: .06em;
+  box-shadow: 0 0 30px rgba(76,195,255,.35); max-width: calc(100vw - 32px);
+}
+.toast.lvup { font-size: 22px; font-weight: 800; color: var(--gold); border-color: var(--gold); }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

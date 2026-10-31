@@ -1,0 +1,100 @@
+<div class="wrap">
+  <header class="topo">
+    <div>
+      <div class="tag">[ Sistema ] Jogador conectado</div>
+      <h1>O Sistema</h1>
+    </div>
+    <div class="quem">
+      @if (auth.usuario()?.fotoUrl; as foto) {
+        <img [src]="foto" alt="" referrerpolicy="no-referrer" />
+      }
+      <button class="btn small" (click)="auth.sair()">Sair</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="lado">
+      <section class="win"><app-calendario /></section>
+    </aside>
+
+    <div class="principal">
+      @if (store.me(); as me) {
+        <section class="win" aria-label="Status do jogador">
+          <div class="status">
+            <div class="lvl"><div><small>NÍVEL</small><b>{{ me.nivel }}</b></div></div>
+            <div class="who">
+              <div class="row">
+                <span class="rank">{{ rank(me.nivel) }}</span>
+                <span class="mute">Caçador Rank {{ rank(me.nivel) }} · {{ me.nome }}</span>
+              </div>
+              <div class="bar"><i [style.width.%]="(me.xpNoNivel / me.xpPorNivel) * 100"></i></div>
+              <div class="row between">
+                <span class="num">{{ me.xpNoNivel }} / {{ me.xpPorNivel }} XP</span>
+                <span class="num">Sequência: {{ me.sequencia }} {{ me.sequencia === 1 ? 'dia' : 'dias' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="attrs">
+            @for (a of atributos; track a.sigla) {
+              <div class="attr" [title]="a.nome"><small>{{ a.sigla }}</small><b>{{ me.atributos[a.sigla] }}</b></div>
+            }
+          </div>
+
+          <div class="vault">
+            <div>
+              <div class="tag gold">Tesouro · 1 XP = {{ brl(me.centavosPorXp) }}</div>
+              <div class="big">{{ brl(me.tesouroGanhoCentavos) }}</div>
+              <div class="sub">Na caixinha <b>{{ brl(me.saldoCaixinhaCentavos) }}</b></div>
+            </div>
+            <div class="side">
+              @if (me.pendenteDepositoCentavos > 0) {
+                <span class="lockline">Depositar agora</span>
+                <span class="pend">{{ brl(me.pendenteDepositoCentavos) }}</span>
+                <button class="btn small gold solid" (click)="store.depositar()">Depositei</button>
+              } @else {
+                <span class="lockline">Caixinha em dia ✓</span>
+              }
+              @if (!me.tesouroLiberado) {
+                <span class="lockline">🔒 Liberado no nível {{ me.nivelLiberaTesouro }}</span>
+              }
+            </div>
+          </div>
+        </section>
+
+        @if (me.penalidadesAtivas > 0) {
+          <button class="alerta" (click)="aba.set('pen')">
+            <span class="tag red">⚠ Zona de penalidade</span>
+            <span>
+              <b>{{ me.penalidadesAtivas }}</b>
+              {{ me.penalidadesAtivas > 1 ? 'penalidades ativas' : 'penalidade ativa' }}. Toque para ver.
+            </span>
+          </button>
+        }
+      } @else if (erro()) {
+        <p class="erro">{{ erro() }}</p>
+      } @else {
+        <p class="mute">Carregando o Sistema...</p>
+      }
+
+      <section class="win">
+        <nav class="tabs" role="tablist">
+          @for (t of abas; track t.id) {
+            <button role="tab" [attr.aria-selected]="aba() === t.id" (click)="aba.set(t.id)">{{ t.nome }}</button>
+          }
+        </nav>
+        @switch (aba()) {
+          @case ('hoje') { <app-aba-hoje /> }
+          @case ('pen') { <app-aba-penalidades /> }
+          @case ('rec') { <app-aba-recompensas /> }
+          @case ('tes') { <app-aba-tesouro /> }
+          @case ('reg') { <app-aba-registro /> }
+        }
+      </section>
+    </div>
+  </div>
+</div>
+
+@if (store.toast(); as t) {
+  <div class="toast" [class.lvup]="t.grande">{{ t.texto }}</div>
+}
