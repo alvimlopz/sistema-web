@@ -148,7 +148,7 @@ import { ATRIBUTOS, brl, dataDe, DIAS, MESES, Missao, MissaoDoDia, MissaoRequest
         </label>
         <div class="two">
           <label>Meta <input name="meta" [(ngModel)]="form.meta" maxlength="60" placeholder="10 km" /></label>
-          <label>XP <input name="xp" type="number" min="1" max="1000" step="5" [(ngModel)]="form.xp" /></label>
+          <label>XP (máx. 50) <input name="xp" type="number" min="1" max="50" step="5" [(ngModel)]="form.xp" /></label>
         </div>
         <div class="two">
           <label>Atributo
@@ -310,10 +310,15 @@ export class AbaHoje {
       : [...this.form.dias, d].sort();
   }
 
-  async salvar() {
+    async salvar() {
     if (!this.form.nome.trim()) {
       this.store.avisar('Dê um nome para a missão');
       return;
+    }
+    const xp = Number(this.form.xp);
+    if (!(xp >= 1 && xp <= 50)) {
+    this.store.avisar('Cada missão vale de 1 a 50 XP');
+    return;
     }
     let req: MissaoRequest;
     if (this.avulsa()) {
