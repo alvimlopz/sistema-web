@@ -1,4 +1,4 @@
 export const environment = {
-  apiUrl: 'https://api.atset.com.br/api',
+  apiUrl: '/api',
   googleClientId: 'SEU_ID_COMPLETO.apps.googleusercontent.com',
 };
