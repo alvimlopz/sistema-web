@@ -98,3 +98,6 @@ export interface RankingItem {
   posicao: number; nome: string; fotoUrl: string | null;
   nivel: number; xpTotal: number; voce: boolean;
 }
+
+export const XP_MAXIMO_DIA = 300;
+export const XP_MAXIMO_MISSAO = 50;

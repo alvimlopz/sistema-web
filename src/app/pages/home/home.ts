@@ -9,13 +9,14 @@ import { AbaTesouro } from './abas/aba-tesouro';
 import { AbaRegistro } from './abas/aba-registro';
 import { Calendario } from './calendario';
 import { Ranking } from './ranking';
+import { Radar } from './radar';
 
 
 type Aba = 'hoje' | 'pen' | 'rec' | 'tes' | 'reg';
 
 @Component({
   selector: 'app-home',
-  imports: [AbaHoje, AbaPenalidades, AbaRecompensas, AbaTesouro, AbaRegistro, Calendario, Ranking],
+  imports: [AbaHoje, AbaPenalidades, AbaRecompensas, AbaTesouro, AbaRegistro, Calendario, Ranking, Radar],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })

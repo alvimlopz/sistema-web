@@ -1,7 +1,7 @@
 import { Component, ElementRef, computed, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { JogoStore } from '../../../../core/jogo.store';
-import { ATRIBUTOS, brl, dataDe, DIAS, MESES, Missao, MissaoDoDia, MissaoRequest, quandoTexto } from '../../../../core/models';
+import { ATRIBUTOS, brl, dataDe, DIAS, MESES, Missao, MissaoDoDia, MissaoRequest, quandoTexto, XP_MAXIMO_DIA } from '../../../../core/models';
 
 
 
@@ -22,6 +22,17 @@ import { ATRIBUTOS, brl, dataDe, DIAS, MESES, Missao, MissaoDoDia, MissaoRequest
     <div class="progresso">
       <i [style.width.%]="placar().total ? (placar().feitas / placar().total) * 100 : 0"></i>
     </div>
+    <div class="orcamento" [class.cheio]="orcamento().restante === 0">
+  <div>
+    <div class="tag gold">XP do dia</div>
+    <div class="grande">{{ orcamento().restante }} <small>XP livres</small></div>
+  </div>
+  <div class="direita">
+    <span class="num">{{ orcamento().usado }} de {{ orcamento().total }} XP distribuídos</span>
+    <div class="barra"><i [style.width.%]="(orcamento().usado / orcamento().total) * 100"></i></div>
+    <span class="dica">Você tem 300 XP por dia pra distribuir · máximo de 50 XP por missão</span>
+  </div>
+</div>
 
     @if (store.ehHoje()) {
       <div class="sec-head">
@@ -255,6 +266,14 @@ export class AbaHoje {
     const dt = dataDe(d);
     return { dia: `${dt.getDate()} de ${MESES[dt.getMonth()]}`, ano: String(dt.getFullYear()) };
   });
+
+  orcamento = computed(() => {
+  const lista = this.store.ehHoje()
+    ? (this.store.hoje()?.missoes ?? [])
+    : (this.store.detalheDia()?.missoes ?? []);
+  const usado = lista.reduce((soma, m) => soma + m.missao.xp, 0);
+  return { usado, total: XP_MAXIMO_DIA, restante: Math.max(0, XP_MAXIMO_DIA - usado) };
+});
 
   placar = computed(() => {
     if (this.store.ehHoje()) {
