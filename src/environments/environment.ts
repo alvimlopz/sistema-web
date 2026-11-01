@@ -1,4 +1,4 @@
 export const environment = {
   apiUrl: '/api',
-  googleClientId: 'SEU_ID_COMPLETO.apps.googleusercontent.com',
+  googleClientId: '858116167495-mc04376u2qbgns9l76pgtuukjsrt86gp.apps.googleusercontent.com',
 };
