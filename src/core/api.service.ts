@@ -1,14 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import {
-    DiaDetalhe,
-    DiaResumo,
-  HistoricoItem, Hoje, Me, Missao, MissaoRequest, Penalidade, Punicao, PunicaoRequest,
-  RankingItem,
-  Recompensa, RecompensaRequest, Tesouro,
-} from './models';
 import { environment } from '../environments/environment';
+import {
+  Categoria, DiaDetalhe, DiaResumo, HistoricoItem, Hoje, Me, Missao, MissaoRequest, OrigemProgresso,
+  Penalidade, Punicao, PunicaoRequest, RankingItem, Recompensa, RecompensaRequest, Tesouro,
+} from './models';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -22,6 +19,12 @@ export class ApiService {
 
   me() { return this.get<Me>('/me'); }
   historico() { return this.get<HistoricoItem[]>('/me/historico'); }
+  ranking() { return this.get<RankingItem[]>('/ranking'); }
+
+  categorias() { return this.get<Categoria[]>('/categorias'); }
+  criarCategoria(nome: string) { return this.post<Categoria>('/categorias', { nome }); }
+  editarCategoria(id: string, nome: string) { return this.put<Categoria>(`/categorias/${id}`, { nome }); }
+  excluirCategoria(id: string) { return this.del(`/categorias/${id}`); }
 
   missoes() { return this.get<Missao[]>('/missoes'); }
   hoje() { return this.get<Hoje>('/missoes/hoje'); }
@@ -30,11 +33,10 @@ export class ApiService {
   arquivarMissao(id: string) { return this.del(`/missoes/${id}`); }
   concluir(id: string) { return this.post<Hoje>(`/missoes/${id}/concluir`); }
   desfazer(id: string) { return this.del<Hoje>(`/missoes/${id}/concluir`); }
-
-  calendario(mes: string) { return this.get<DiaResumo[]>(`/calendario?mes=${mes}`); }
-  dia(data: string) { return this.get<DiaDetalhe>(`/calendario/dia/${data}`); }
-
-  ranking() { return this.get<RankingItem[]>('/ranking'); }
+  progresso(id: string, quantidade: number, origem: OrigemProgresso) {
+    return this.post<Hoje>(`/missoes/${id}/progresso`, { quantidade, origem });
+  }
+  desfazerProgresso(id: string) { return this.del<Hoje>(`/missoes/${id}/progresso/ultimo`); }
 
   punicoes() { return this.get<Punicao[]>('/punicoes'); }
   criarPunicao(r: PunicaoRequest) { return this.post<Punicao>('/punicoes', r); }
@@ -53,4 +55,7 @@ export class ApiService {
   depositar() { return this.post<Tesouro>('/tesouro/depositar'); }
   comprar(descricao: string, valorCentavos: number) { return this.post<Tesouro>('/tesouro/compras', { descricao, valorCentavos }); }
   configurarTesouro(centavosPorXp: number) { return this.put<Tesouro>('/tesouro/config', { centavosPorXp }); }
+
+  calendario(mes: string) { return this.get<DiaResumo[]>(`/calendario?mes=${mes}`); }
+  dia(data: string) { return this.get<DiaDetalhe>(`/calendario/dia/${data}`); }
 }

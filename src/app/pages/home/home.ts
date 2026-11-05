@@ -2,21 +2,21 @@ import { Component, OnInit, effect, inject, signal, untracked } from '@angular/c
 import { AuthService } from '../../../core/auth.service';
 import { JogoStore } from '../../../core/jogo.store';
 import { ATRIBUTOS, brl, rank } from '../../../core/models';
-import { AbaRecompensas } from './abas/aba-recompensas';
 import { AbaHoje } from './abas/aba-hoje';
+import { AbaFoco } from './abas/aba-foco';
 import { AbaPenalidades } from './abas/aba-penalidades';
+import { AbaRecompensas } from './abas/aba-recompensas';
 import { AbaTesouro } from './abas/aba-tesouro';
 import { AbaRegistro } from './abas/aba-registro';
 import { Calendario } from './calendario';
 import { Ranking } from './ranking';
 import { Radar } from './radar';
 
-
-type Aba = 'hoje' | 'pen' | 'rec' | 'tes' | 'reg';
+type Aba = 'hoje' | 'foco' | 'pen' | 'rec' | 'tes' | 'reg';
 
 @Component({
   selector: 'app-home',
-  imports: [AbaHoje, AbaPenalidades, AbaRecompensas, AbaTesouro, AbaRegistro, Calendario, Ranking, Radar],
+  imports: [AbaHoje, AbaFoco, AbaPenalidades, AbaRecompensas, AbaTesouro, AbaRegistro, Calendario, Ranking, Radar],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
@@ -32,6 +32,7 @@ export class Home implements OnInit {
   rank = rank;
   abas: { id: Aba; nome: string }[] = [
     { id: 'hoje', nome: 'Missões do dia' },
+    { id: 'foco', nome: 'Foco' },
     { id: 'pen', nome: 'Penalidades' },
     { id: 'rec', nome: 'Recompensas' },
     { id: 'tes', nome: 'Tesouro' },
